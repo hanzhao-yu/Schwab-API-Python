@@ -53,20 +53,6 @@ def initialize():
     # check if tokens need to be updated and update if needed
     _updateTokensManual()
 
-    # get account numbers & hashes, this doubles to make sure that the appKey and appSecret are valid
-    terminal.colorPrint.info("Filling account number and account hash -> ", end="")
-    resp = accounts.accountNumbers()
-    if resp.ok:
-        print("Done")
-        credentials.accountNumber = resp.json()[0].get('accountNumber', None)
-        credentials.accountHash = resp.json()[0].get('hashValue', None)
-    else:
-        print("Error")
-        terminal.colorPrint.error("Could not get account numbers and account hash.")
-        terminal.colorPrint.error(
-            "Please make sure that your app status is \"Ready For Use\" and that the app key and app secret are valid.")
-        terminal.colorPrint.error(resp.json())
-
     terminal.colorPrint.info("Initialization Complete")
 
 
@@ -94,7 +80,7 @@ def updateTokensAutomatic():
 
 
 def _AccessTokenUpdate():
-    # get the token dictionary (we will need to rewrite the wile)
+    # get the token dictionary (we will need to rewrite the file)
     accessTokenFileTime, refreshTokenFileTime, tokenDictionary = _TokenManager("getFile")
     # get new tokens
     response = _PostAccessTokenAutomated('refresh_token', tokenDictionary.get("refresh_token"))
